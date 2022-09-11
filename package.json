@@ -1,0 +1,13 @@
+{
+  "name": "olavo-tem-razao-mono",
+  "version": "1.0.0",
+  "private": true,
+  "license": "MIT",
+  "workspaces": [
+    "api",
+    "client"
+  ],
+  "scripts": {
+    "dev": "yarn workspaces run dev"
+  }
+}
