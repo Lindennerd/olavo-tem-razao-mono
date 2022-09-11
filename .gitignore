@@ -10,9 +10,9 @@ node_modules
 /coverage
 
 # next.js
-/.next/
-/out/
-/dist
+.next/
+out/
+dist
 # production
 /build
 
@@ -36,3 +36,12 @@ yarn-error.log*
 *.tsbuildinfo
 next-env.d.ts
 node_modules
+
+# Yarn
+.yarn/*
+.yarn/
+!.yarn/cache
+!.yarn/releases
+!.yarn/plugins
+!.yarn/sdks
+!.yarn/versions
