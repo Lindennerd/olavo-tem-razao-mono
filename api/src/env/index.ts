@@ -7,6 +7,6 @@ type Env = {
 };
 
 export const env: Env = {
-  PORT: Number(process.env.PORT || "3000"),
+  PORT: Number(process.env.PORT || "5000"),
   graphqlPath: process.env.GRAPHQL_PATH || "/graphql",
 };

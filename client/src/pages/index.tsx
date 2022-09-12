@@ -1,25 +1,29 @@
 import { gql, useQuery } from "@apollo/client";
-import type { NextPage } from "next";
 import ReactLoading from "react-loading";
-import client from "../apollo-client";
+import { Meme } from "../components/Meme";
+import { useRandomConspiracy } from "../hooks/useRandomConspiracy";
+import { useMemeStore } from "../store/memeStore";
 
 const QUERY = gql`
   query {
     random {
-      text
+      image
     }
   }
 `;
 
-export default function Home({ conspiracy }: { conspiracy: string }) {
-  const { data, loading, error, refetch } = useQuery(QUERY);
+export default function Home() {
+  const { setMeme } = useMemeStore((state) => state);
+  const { data, loading, error, refetch } = useRandomConspiracy();
+
+  if (data) console.log(data);
 
   return (
     <>
       <div className="p-4 border rounded-md shadow-lg w-full">
-        {/* {isLoading && <ReactLoading />} */}
-        {/* <Meme /> */}
-        {data && data.random.text}
+        {loading && <ReactLoading />}
+        {/* {data && data.data.toString()} */}
+        <Meme />
       </div>
       <button className="btn w-full" onClick={(e) => refetch()}>
         Gerar
@@ -27,24 +31,3 @@ export default function Home({ conspiracy }: { conspiracy: string }) {
     </>
   );
 }
-
-// export async function getStaticProps() {
-//   const { data: conspiracy, error } = await client.query({
-//     query: gql`
-//       query {
-//         random {
-//           text
-//         }
-//       }
-//     `,
-//   });
-
-//   console.log("result", conspiracy);
-//   if (error) console.log("error ========>", error.message);
-
-//   return {
-//     props: {
-//       conspiracy: conspiracy.random.text,
-//     },
-//   };
-// }

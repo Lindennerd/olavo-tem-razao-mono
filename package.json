@@ -10,7 +10,8 @@
   "packageManager": "yarn@3.2.3",
   "scripts": {
     "build": "yarn workspaces foreach run build",
-    "dev": "yarn workspaces foreach run dev",
+    "dev:api": "yarn workspace @olavo-tem-razao-mono/api run dev",
+    "dev:client": "yarn workspace @olavo-tem-razao-mono/client run dev",
     "start": "yarn workspaces @olavo-tem-razao-mono/api start"
   }
 }

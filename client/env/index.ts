@@ -3,5 +3,5 @@ interface Env {
 }
 
 export const env: Env = {
-  API: process.env.API || "http://localhost:3000/graphql",
+  API: process.env.API || "http://localhost:5000/graphql",
 };
