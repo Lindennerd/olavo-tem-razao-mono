@@ -12,6 +12,7 @@
     "build": "yarn workspaces foreach run build",
     "dev:api": "yarn workspace @olavo-tem-razao-mono/api run dev",
     "dev:client": "yarn workspace @olavo-tem-razao-mono/client run dev",
+    "dev:codegen": "yarn workspace @olavo-tem-razao-mono/client run codegen",
     "start": "yarn workspaces @olavo-tem-razao-mono/api start"
   }
 }
