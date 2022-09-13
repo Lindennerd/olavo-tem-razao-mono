@@ -82,7 +82,7 @@ export function areList() {
   ];
 }
 
-export function WorkingWithList(): WorkingWith[] {
+export function WorkingWithList() {
   return [
     {
       text: "chineses",

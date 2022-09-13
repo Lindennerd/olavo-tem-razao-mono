@@ -18,10 +18,10 @@ export const resolvers = {
   Query: {
     conspiracies: () => {
       return {
-        who: WhoList(),
-        are: areList(),
-        wokingWith: WorkingWithList(),
-        todo: TodoList(),
+        who: WhoList().map((t) => t.text),
+        are: areList().map((t) => t.text),
+        workingWith: WorkingWithList().map((t) => t.text),
+        todo: TodoList().map((t) => t.text),
       };
     },
 
