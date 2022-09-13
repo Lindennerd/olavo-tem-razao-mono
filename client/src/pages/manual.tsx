@@ -1,126 +1,88 @@
-import { gql, useLazyQuery, useQuery } from "@apollo/client";
-import { useEffect, useState } from "react";
 import ReactLoading from "react-loading";
 import { ManualStep } from "../components/ManualStep";
 import { Meme } from "../components/Meme";
-import { Stepper, Step } from "../components/Stepper";
-import { useMemeStore } from "../store/memeStore";
+import { Stepper } from "../components/Stepper";
+import { useConspiracy } from "../hooks/useConspiracy";
+import { usePhrases } from "../hooks/usePhrases";
 import selectedOptionsStore from "../store/optionsStore";
 
-const QUERY_CONSPIRACIES = gql`
-  query {
-    conspiracies {
-      who {
-        text
-      }
-      are {
-        text
-      }
-      WorkingWith {
-        text
-      }
-      todo {
-        text
-      }
-    }
-  }
-`;
-
-const QUERY_MANUAL = gql`
-  query {
-    manual(who: 3, are: 2, workingWith: 2, todo: 2) {
-      text
-      image
-    }
-  }
-`;
-
 export default function ManualPage() {
-  const [steps, setSteps] = useState<Step[]>();
-  const { setMeme } = useMemeStore((state) => state);
+  const { manual } = useConspiracy();
+  const { getPhrases } = usePhrases();
+
   const { selectedOptions, isStepDone } = selectedOptionsStore(
     (state) => state
   );
-  const { data: conspiracies, loading, error } = useQuery(QUERY_CONSPIRACIES);
-  const [getManual, { loading: loadingManual, data }] =
-    useLazyQuery(QUERY_MANUAL);
 
-  function stepNameFactory(step: string) {
-    switch (step) {
-      case "who":
-        return "Quem";
-      case "are":
-        return "Esta";
-      case "workingWith":
-        return "Com";
-      case "todo":
-        return "Para quê?";
-      default:
-        return "";
-    }
-  }
-
-  // useEffect(() => {
-  //   setSteps((curr) => {
-  //     console.log(conspiracies);
-  //     if (conspiracies.conspiracies)
-  //       return Object.keys(conspiracies.conspiracies!).map((c, index) => {
-  //         const stepName = stepNameFactory(c);
-  //         return {
-  //           label: stepName,
-  //           index: index,
-  //           isActive: index === 0,
-  //           isDone: false,
-  //           content: (
-  //             <ManualStep
-  //               step={{
-  //                 label: stepName,
-  //                 items: getStepItems(index),
-  //               }}
-  //             />
-  //           ),
-  //         };
-  //       });
-  //   });
-  // }, [conspiracies]);
-
-  function getStepItems(index: number): string[] {
-    if (conspiracies.conspiracies) {
-      const conspiracyValue = Object.values(conspiracies.conspiracies);
-      const activeConspiracies = conspiracyValue[index]!;
-      return activeConspiracies?.map((w) =>
-        typeof w === "string" ? w : w.text
-      );
-    } else return [];
-  }
-
-  const resultStep: Step = {
-    isActive: false,
-    isDone: false,
-    label: "Resultado",
-    content: <Meme />,
-  };
+  const { data, loading, error } = getPhrases();
+  const [
+    getManual,
+    { loading: loadingManual, error: errorManual, data: meme },
+  ] = manual();
 
   function getMeme() {
-    getManual({
-      onCompleted(data) {
-        setMeme(data.random.image);
-      },
-      variables: {
-        who: selectedOptions.find((op) => op.label === "Quem")!.value,
-        are: selectedOptions.find((op) => op.label === "Esta")!.value,
-        workingWith: selectedOptions.find((op) => op.label === "Esta")!.value,
-        todo: selectedOptions.find((op) => op.label === "Para quê?")!.value,
-      },
-    });
+    const vars = {
+      who: selectedOptions.find((op) => op.label === "who")!.value,
+      are: selectedOptions.find((op) => op.label === "are")!.value,
+      workingWith: selectedOptions.find((op) => op.label === "workingWith")!
+        .value,
+      todo: selectedOptions.find((op) => op.label === "todo")!.value,
+    };
+    getManual({ variables: vars });
   }
 
   return (
     <>
       {loading && <ReactLoading />}
-      {steps && <Stepper steps={[...steps, resultStep]} />}
+      {data && (
+        <Stepper
+          steps={[
+            {
+              label: "Quem",
+              isActive: true,
+              content: <ManualStep items={data.conspiracies.who} label="who" />,
+              isDone: false,
+            },
+            {
+              label: "Esta",
+              isActive: false,
+              content: <ManualStep items={data.conspiracies.are} label="are" />,
+              isDone: false,
+            },
+            {
+              label: "Com",
+              isActive: false,
+              isDone: false,
+              content: (
+                <ManualStep
+                  items={data.conspiracies.workingWith}
+                  label="workingWith"
+                />
+              ),
+            },
+            {
+              label: "Para",
+              isActive: false,
+              content: (
+                <ManualStep items={data.conspiracies.todo} label="todo" />
+              ),
+              isDone: false,
+            },
+            {
+              isActive: false,
+              isDone: false,
+              label: "Resultado",
+              content: <Meme img={meme ? meme.manual.image : ""} />,
+            },
+          ]}
+        />
+      )}
+
       {isStepDone() && (
-        <button className="btn btn-success w-full" onClick={(e) => getMeme()}>
+        <button
+          className={`btn btn-success w-full ${loadingManual && "loading"}`}
+          onClick={(e) => getMeme()}
+        >
           Gerar
         </button>
       )}

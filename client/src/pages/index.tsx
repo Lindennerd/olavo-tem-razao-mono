@@ -1,31 +1,20 @@
-import { gql, useQuery } from "@apollo/client";
-import ReactLoading from "react-loading";
 import { Meme } from "../components/Meme";
-import { useRandomConspiracy } from "../hooks/useRandomConspiracy";
-import { useMemeStore } from "../store/memeStore";
-
-const QUERY = gql`
-  query {
-    random {
-      image
-    }
-  }
-`;
+import { useConspiracy } from "../hooks/useConspiracy";
 
 export default function Home() {
-  const { setMeme } = useMemeStore((state) => state);
-  const { data, loading, error, refetch } = useRandomConspiracy();
-
-  if (data) console.log(data);
+  const { random } = useConspiracy();
+  const { data, loading, error, refetch } = random();
 
   return (
     <>
       <div className="p-4 border rounded-md shadow-lg w-full">
-        {loading && <ReactLoading />}
-        {/* {data && data.data.toString()} */}
-        <Meme />
+        {error && <div>{error.message}</div>}
+        {data && <Meme img={data.random.image} />}
       </div>
-      <button className="btn w-full" onClick={(e) => refetch()}>
+      <button
+        className={`btn w-full ${loading && "loading"}`}
+        onClick={(e) => refetch()}
+      >
         Gerar
       </button>
     </>
