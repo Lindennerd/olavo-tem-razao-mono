@@ -2,12 +2,11 @@ import ReactLoading from "react-loading";
 import { ManualStep } from "../components/ManualStep";
 import { Meme } from "../components/Meme";
 import { Stepper } from "../components/Stepper";
-import { useConspiracy } from "../hooks/useConspiracy";
+import { useManualMeme } from "../hooks/useManualMeme";
 import { usePhrases } from "../hooks/usePhrases";
 import selectedOptionsStore from "../store/optionsStore";
 
 export default function ManualPage() {
-  const { manual } = useConspiracy();
   const { getPhrases } = usePhrases();
 
   const { selectedOptions, isStepDone } = selectedOptionsStore(
@@ -18,7 +17,7 @@ export default function ManualPage() {
   const [
     getManual,
     { loading: loadingManual, error: errorManual, data: meme },
-  ] = manual();
+  ] = useManualMeme();
 
   function getMeme() {
     const vars = {

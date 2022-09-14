@@ -1,9 +1,8 @@
 import { Meme } from "../components/Meme";
-import { useConspiracy } from "../hooks/useConspiracy";
+import { useRandomMeme } from "../hooks/useRandomMeme";
 
 export default function Home() {
-  const { random } = useConspiracy();
-  const { data, loading, error, refetch } = random();
+  const { data, loading, error, refetch } = useRandomMeme();
 
   return (
     <>
