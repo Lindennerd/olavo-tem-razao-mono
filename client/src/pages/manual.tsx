@@ -7,13 +7,11 @@ import { usePhrases } from "../hooks/usePhrases";
 import selectedOptionsStore from "../store/optionsStore";
 
 export default function ManualPage() {
-  const { getPhrases } = usePhrases();
-
   const { selectedOptions, isStepDone } = selectedOptionsStore(
     (state) => state
   );
 
-  const { data, loading, error } = getPhrases();
+  const { data, loading, error } = usePhrases();
   const [
     getManual,
     { loading: loadingManual, error: errorManual, data: meme },
