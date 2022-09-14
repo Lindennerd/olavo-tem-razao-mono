@@ -7,7 +7,7 @@ export function Navbar() {
         <a className="btn btn-ghost normal-case text-xl">Olavo Tem Razão</a>
       </div>
       <div className="flex-none">
-        <ul className="menu menu-horizontal p-0">
+        <ul className="menu menu-horizontal p-0 flex-col sm:flex-row">
           <li>
             <Link href="/">
               <a>Automático</a>

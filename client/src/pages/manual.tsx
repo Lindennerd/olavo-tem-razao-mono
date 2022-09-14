@@ -33,50 +33,51 @@ export default function ManualPage() {
 
   return (
     <>
-      {loading && <ReactLoading />}
-      {data && (
-        <Stepper
-          steps={[
-            {
-              label: "Quem",
-              isActive: true,
-              content: <ManualStep items={data.conspiracies.who} label="who" />,
-              isDone: false,
-            },
-            {
-              label: "Esta",
-              isActive: false,
-              content: <ManualStep items={data.conspiracies.are} label="are" />,
-              isDone: false,
-            },
-            {
-              label: "Com",
-              isActive: false,
-              isDone: false,
-              content: (
-                <ManualStep
-                  items={data.conspiracies.workingWith}
-                  label="workingWith"
-                />
-              ),
-            },
-            {
-              label: "Para",
-              isActive: false,
-              content: (
-                <ManualStep items={data.conspiracies.todo} label="todo" />
-              ),
-              isDone: false,
-            },
-            {
-              isActive: false,
-              isDone: false,
-              label: "Resultado",
-              content: <Meme img={meme ? meme.manual.image : ""} />,
-            },
-          ]}
-        />
-      )}
+      <div>
+        {loading && <ReactLoading />}
+        {data && (
+          <Stepper
+            steps={[
+              {
+                label: "Quem",
+                isActive: true,
+                content: (
+                  <ManualStep items={data.conspiracies.who} label="who" />
+                ),
+                isDone: false,
+              },
+              {
+                label: "Esta",
+                isActive: false,
+                content: (
+                  <ManualStep items={data.conspiracies.are} label="are" />
+                ),
+                isDone: false,
+              },
+              {
+                label: "Com",
+                isActive: false,
+                isDone: false,
+                content: (
+                  <ManualStep
+                    items={data.conspiracies.workingWith}
+                    label="workingWith"
+                  />
+                ),
+              },
+              {
+                label: "Para",
+                isActive: false,
+                content: (
+                  <ManualStep items={data.conspiracies.todo} label="todo" />
+                ),
+                isDone: false,
+              },
+            ]}
+          />
+        )}
+        {meme && <Meme img={meme.manual.image} />}
+      </div>
 
       {isStepDone() && (
         <button

@@ -7,7 +7,7 @@ export default function Home() {
 
   return (
     <>
-      <div className="p-4 border rounded-md shadow-lg w-full">
+      <div>
         {error && <div>{error.message}</div>}
         {data && <Meme img={data.random.image} />}
       </div>

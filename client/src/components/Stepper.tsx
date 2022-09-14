@@ -57,7 +57,7 @@ export function Stepper(props: StepperProps) {
       </ul>
       <div>
         <div className="mb-8">{steps.find((s) => s.isActive)?.content}</div>
-        <div className="fixed bottom-1">
+        <div className="">
           <div className="flex justify-between gap-4">
             <button
               disabled={isFirst}
